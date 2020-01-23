@@ -1,9 +1,10 @@
 [**Github User Profile**](https://github.com/gooberglob)
 
-# **Repositories**
-## User
+# **Repositories:**
+##   User:
 * [Participation Repo](https://github.com/gooberglob/DataSci-participation)
-## Org
+
+##   Org:
 * [Class Home](https://github.com/USF-Psych-DataSci)
 * [HW](https://github.com/USF-Psych-DataSci/HW)
 
