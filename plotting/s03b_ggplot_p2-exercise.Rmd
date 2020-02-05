@@ -210,7 +210,7 @@ Fix the following bar plot so that it shows these counts.
 
 ```{r}
 ggplot(hair, aes(Hair, n)) +
-  geom_bar()
+  geom_bar(stat = "identity")
 ```
 
 ## Exercise 7: Tiling
@@ -227,7 +227,7 @@ _Hint:_ What's the title of this exercise?
 
 ```{r}
 ggplot(hair_eye, aes(Hair, Eye)) +
-  geom_point(aes(colour = n))
+  geom_point(aes(fill = n))
 ```
 
 By the way, `geom_count()` is like `geom_bar()`: it counts the number of overlapping points.
