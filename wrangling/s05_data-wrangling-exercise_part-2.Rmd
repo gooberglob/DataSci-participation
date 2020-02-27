@@ -115,7 +115,9 @@ iris_inches <- irisnew %>%
    sepal length. Indicate species using color and point shape.
 
 ```{r}
-
+iris_inches %>% 
+  ggplot(aes(x = sepal_width, y = sepal_length)) +
+  geom_point(aes(color = species, shape = species))
 ```
 
 7. Using the data from Task 5, plot the relationship between sepal width and
@@ -123,6 +125,10 @@ iris_inches <- irisnew %>%
    (facet).
 
 ```{r}
+iris_inches %>% 
+  ggplot(aes(x = sepal_width, y = sepal_length)) +
+  geom_point(aes(color = species, shape = species)) +
+  facet_grid(rows = vars(species))
 ```
 
 
@@ -164,7 +170,14 @@ Now compute mean scores for Conscientiousness, as well as `sd` and `min` scores
 for reach person.
 
 ```{r}
-
+psych::bfi %>%
+  rownames_to_column(var = "id") %>% 
+  select(id, C1:C5) %>% 
+  rowwise() %>% 
+  mutate(C_sd = sd(c(C1, C2, C3, C4, C5), na.rm = TRUE),
+         C_mean = mean(c(C1, C2, C3, C4, C5), na.rm = TRUE),
+         C_min = min(c(C1, C2, C3, C4, C5), na.rm = TRUE)) %>% 
+  ungroup()
 ```
 
 Some functions are **vectorized**, so you don't need `rowwise()`. 
