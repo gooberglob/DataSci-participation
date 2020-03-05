@@ -1,0 +1,27 @@
+---
+title: "File Input/Output"
+output: 
+  html_document:
+    keep_md: true
+    theme: paper
+---
+
+```{r}
+#install.packages("readr::read_csv")
+#install.packages("readxl::read_excel")
+#install.packages("googlsheets4::read_sheet")
+#install.packages("haven")
+#install.packages("rio::import")
+install.packages("here")
+library(tidyverse)
+library(gapminder)
+```
+
+
+```{r}
+(gap_asia_2007 <- gapminder %>% filter(year == 2007, continent == "Asia"))
+
+#write_csv(gap_asia_2007, "exported_file.csv")
+write_csv(gap_asia_2007, here::here("data", "s008_data", "exported_file.csv"))
+```
+
