@@ -6,22 +6,69 @@ output:
     theme: paper
 ---
 
-```{r}
+```{r, message=FALSE}
 #install.packages("readr::read_csv")
 #install.packages("readxl::read_excel")
 #install.packages("googlsheets4::read_sheet")
 #install.packages("haven")
 #install.packages("rio::import")
-install.packages("here")
+
+#install.packages("svglite")
+#install.packages("ggplot2", dependencies=TRUE)
+#install.packages("here")
 library(tidyverse)
 library(gapminder)
+library(ggthemes)
 ```
 
 
-```{r}
+```{r, message=FALSE}
 (gap_asia_2007 <- gapminder %>% filter(year == 2007, continent == "Asia"))
 
 #write_csv(gap_asia_2007, "exported_file.csv")
 write_csv(gap_asia_2007, here::here("data", "s008_data", "exported_file.csv"))
+imported <- read_csv(here::here("data", "s008_data", "exported_file.csv"))
+```
+```{r}
+(clevel <- haven::read_spss(here::here("data", "s008_data", "clevel.sav")))
+
+clevel_cleaned <-
+  clevel %>% #could put haven right here
+  mutate(language = as_factor(language),
+         gender = as_factor(gender),
+         isClevel = factor(isClevel, 
+                           levels = c(0, 1), 
+                           labels = c("No", "Yes"))
+  ) %>% 
+  print()
+
+write.csv(clevel_cleaned, here::here("data", "s008_data", "clevel_cleaned.csv"))
+
+clevel_plot <-
+  clevel_cleaned %>% 
+  mutate(isClevel = recode(isClevel, 
+                           No = "Below C-level", 
+                           Yes = "C-level"),
+         gender = recode(gender,
+                         Female = "Women",
+                         Male = "Men")) %>% 
+  ggplot(aes(paste(isClevel, gender, sep = "\n"), Extraversion, color = gender)) +
+  geom_boxplot() +
+  geom_jitter(height = .2) +
+  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
+  ggtitle("Extraversion Stan Scores") +
+  scale_y_continuous(breaks = 1:9) +
+  ggthemes::theme_fivethirtyeight()
+  print(clevel_plot)
+  
+dir.create(here::here("output", "figures"), recursive = TRUE)
+ggsave(here::here("output", "figures", "clevel_extraversion.svg"), clevel_plot)
+ggsave(here::here("output", "figures", "clevel_extraversion.pdf"), clevel_plot)
+ggsave(here::here("output", "figures", "clevel_extraversion.tiff"), clevel_plot)
+ggsave(here::here("output", "figures", "clevel_extraversion.png"), clevel_plot)
+ggsave(here::here("output", "figures", "clevel_extraversion.jpeg"), clevel_plot)
+
+ggsave(here::here("output", "figures", "clevel_extraversion.gif"), clevel_plot)
+ggsave(here::here("output", "figures", "clevel_extraversion.eps"), clevel_plot)
 ```
 
